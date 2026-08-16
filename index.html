@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Arati Kitchen — WhatsApp Order Tracking</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f6f0df;color:#173b20}
+header{background:#123d20;color:#fff;text-align:center;padding:22px}
+h1{margin:0;color:#f7d85b;font-size:34px}.wrap{max-width:760px;margin:22px auto;padding:0 15px}
+.card{background:#fff;border-radius:18px;padding:22px;margin-bottom:18px;box-shadow:0 6px 22px #0001}
+input{width:100%;padding:14px;border:2px solid #d9cfae;border-radius:10px;margin:7px 0 14px;font-size:16px}
+button{width:100%;padding:14px;margin:6px 0;border:0;border-radius:10px;background:#123d20;color:#fff;font-weight:700;font-size:16px}
+.wa{background:#159447}.gold{background:#efb51b;color:#173b20}.step{display:flex;gap:13px;margin:13px 0;align-items:center}
+.dot{width:27px;height:27px;border-radius:50%;background:#ccc;flex:none}.active .dot{background:#159447}
+.status{padding:10px 13px;border-radius:20px;background:#e8f4e8;display:inline-block;font-weight:700}
+.small{color:#666;font-size:14px}.hide{display:none}.note{background:#fff8dc;padding:12px;border-radius:10px}
+</style>
+</head>
+<body>
+<header><h1>Arati Kitchen</h1><p>Homemade Food. Made with Love.</p></header>
+<div class="wrap">
+<div class="card">
+<h2>📦 Track Your Order</h2>
+<p>Order ID और WhatsApp number डालें।</p>
+<input id="oid" placeholder="Order ID — जैसे AR001">
+<input id="phone" inputmode="numeric" placeholder="WhatsApp number — 10 digits">
+<button class="gold" onclick="show()">Check Order</button>
+</div>
+
+<div id="result" class="card hide">
+<h2 id="orderTitle"></h2>
+<div class="status">📲 WhatsApp Updates</div>
+<div class="step active"><div class="dot"></div><div><b>Order Accepted</b><div class="small">आपका order restaurant ने स्वीकार कर लिया है।</div></div></div>
+<div class="step"><div class="dot"></div><div><b>Preparing Food</b></div></div>
+<div class="step"><div class="dot"></div><div><b>Ready for Delivery</b></div></div>
+<div class="step"><div class="dot"></div><div><b>Out for Delivery</b></div></div>
+<div class="step"><div class="dot"></div><div><b>Delivered</b></div></div>
+<div class="note">हर status पर Arati Kitchen WhatsApp से आपको message मिलेगा।</div>
+</div>
+
+<div class="card">
+<h2>👨‍🍳 Staff Quick Update</h2>
+<p class="small">नीचे customer का WhatsApp number डालकर status message भेजें।</p>
+<input id="adminPhone" inputmode="numeric" placeholder="Customer WhatsApp number">
+<input id="adminOrder" placeholder="Order ID — जैसे AR001">
+<button class="wa" onclick="send('Order Accepted','आपका order Arati Kitchen ने स्वीकार कर लिया है।')">✓ Order Accepted</button>
+<button onclick="send('Preparing Food','आपका खाना Arati Kitchen में तैयार हो रहा है।')">🍳 Preparing Food</button>
+<button onclick="send('Ready for Delivery','आपका order तैयार है और delivery के लिए pack हो चुका है।')">📦 Ready for Delivery</button>
+<button onclick="send('Out for Delivery','आपका order delivery के लिए निकल चुका है। 🛵')">🛵 Out for Delivery</button>
+<button class="wa" onclick="send('Delivered','आपका order successfully delivered हो गया है। ❤️ Arati Kitchen को धन्यवाद!')">✓ Delivered</button>
+</div>
+</div>
+<script>
+function clean(v){return v.replace(/\D/g,'')}
+function show(){
+ const id=document.getElementById('oid').value.trim().toUpperCase();
+ if(!id){alert('Order ID डालें');return}
+ document.getElementById('orderTitle').textContent='Order '+id;
+ document.getElementById('result').classList.remove('hide');
+}
+function send(status,text){
+ let p=clean(document.getElementById('adminPhone').value);
+ const id=document.getElementById('adminOrder').value.trim().toUpperCase();
+ if(p.length===10)p='91'+p;
+ if(!p||p.length<12){alert('Customer का 10 digit WhatsApp number डालें');return}
+ if(!id){alert('Order ID डालें');return}
+ const msg=`Arati Kitchen — Order ${id}%0A%0A${status}%0A${text}%0A%0ATrack/Contact: 9088802721`;
+ window.open('https://wa.me/'+p+'?text='+encodeURIComponent(`Arati Kitchen — Order ${id}\n\n${status}\n${text}\n\nContact: 9088802721`),'_blank');
+}
+</script>
+</body>
+</html>
